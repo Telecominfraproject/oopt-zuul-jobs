@@ -1,0 +1,44 @@
+---
+
+- job:
+    name: tox-py37-cover
+    parent: tox-cover
+    description: |
+      Run unit tests for a Python project under cPython version 3.7 with coverage tests.
+    post-run: playbooks/coverage-diff/upload.yaml
+    provides: coverage-new
+    vars:
+      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
+      python_version: "3.7"
+
+- job:
+    name: tox-py37-cover-previous
+    parent: tox-py37-cover
+    description: |
+      Run unit tests for a previous version of a Python project under cPython version 3.7 with coverage tests.
+    pre-run: playbooks/coverage-diff/checkout-previous.yaml
+    provides: coverage-old
+    voting: false
+    vars:
+      coverage_artifact_name: "Coverage data (previous state)"
+
+- job:
+    name: coverage-diff
+    parent: base
+    description: |
+      Report how coverage changed compared to the previous state of the repo.
+    pre-run: playbooks/coverage-diff/prepare.yaml
+    run: playbooks/coverage-diff/generate.yaml
+    success-url: coverage-diff.html
+    failure-url: coverage-diff.html
+    requires:
+      - coverage-old
+      - coverage-new
+    vars:
+      previous_source_prefix: "{{ ansible_user_dir }}/previous-src"
+      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
+
+- project:
+    check:
+      jobs:
+        - noop
