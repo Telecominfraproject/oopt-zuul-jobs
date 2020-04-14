@@ -1,0 +1,8 @@
+- name: Prepare git submodules
+  shell: |
+    PREVIOUS_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo "{{ item.key }}: ${PREVIOUS_BRANCH}"
+    git checkout -b zuul_origin_${PREVIOUS_BRANCH} origin/${PREVIOUS_BRANCH}
+  args:
+    chdir: "{{ ansible_user_dir }}/{{ item.value.src_dir }}"
+  loop: "{{ query('dict', zuul.projects) }}"
