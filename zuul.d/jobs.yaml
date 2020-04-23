@@ -38,3 +38,12 @@
     vars:
       previous_source_prefix: "{{ ansible_user_dir }}/previous-src"
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
+
+- job:
+    name: tox-linters-diff
+    parent: tox-linters
+    description: |
+      Coding style linters over a diff introduced by a change
+    vars:
+      python_version: "3.7"
+      tox_envlist: linters_diff
