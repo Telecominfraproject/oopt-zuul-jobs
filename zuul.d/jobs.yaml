@@ -91,3 +91,14 @@
     vars:
       python_version: "3.6"
       python_use_pyenv: false
+
+- job:
+    name: oopt-release-python
+    nodeset: *el8
+    description: Release python tarballs / wheels to pypi.
+    pre-run: playbooks/release-python/pre.yaml
+    run: playbooks/release-python/run.yaml
+    post-run: playbooks/release-python/post.yaml
+    secrets:
+      - secret: oopt-pypi
+        name: pypi_info
