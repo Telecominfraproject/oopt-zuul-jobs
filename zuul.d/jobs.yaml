@@ -102,3 +102,5 @@
     secrets:
       - secret: oopt-pypi
         name: pypi_info
+    allowed-projects:
+      - Telecominfraproject/oopt-gnpy
