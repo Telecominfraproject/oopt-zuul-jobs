@@ -99,8 +99,3 @@
     pre-run: playbooks/release-python/pre.yaml
     run: playbooks/release-python/run.yaml
     post-run: playbooks/release-python/post.yaml
-    secrets:
-      - secret: oopt-pypi
-        name: pypi_info
-    allowed-projects:
-      - Telecominfraproject/oopt-gnpy
