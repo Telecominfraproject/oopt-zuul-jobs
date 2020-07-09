@@ -10,6 +10,16 @@
       python_use_pyenv: false
 
 - job:
+    name: tox-py38-f32
+    parent: tox-py38
+    vars:
+      python_use_pyenv: false
+    nodeset:
+      nodes:
+        - name: f32
+          label: fedora-32-2c-2g # needs more space in tmpfs
+
+- job:
     name: tox-py36-cover
     parent: tox-cover
     description: |
