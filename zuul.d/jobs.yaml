@@ -8,6 +8,9 @@
           label: centos-8-1c-1g
     vars:
       python_use_pyenv: false
+    required-projects: &vexxhost-deps
+      - name: github.com/vexxhost/zuul-base-jobs
+        override-checkout: main
 
 - job:
     name: tox-py38-f32
@@ -18,6 +21,7 @@
       nodes:
         - name: f32
           label: fedora-32-2c-2g # needs more space in tmpfs
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py36-cover
@@ -31,6 +35,7 @@
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_version: "3.6"
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py36-cover-previous
@@ -41,6 +46,7 @@
     voting: false
     vars:
       coverage_artifact_name: "Coverage data (previous state)"
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py37-cover
@@ -52,6 +58,7 @@
     vars:
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_version: "3.7"
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py37-cover-previous
@@ -63,6 +70,7 @@
     voting: false
     vars:
       coverage_artifact_name: "Coverage data (previous state)"
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py38-cover
@@ -76,6 +84,7 @@
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_version: "3.8"
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-py38-cover-previous
@@ -86,6 +95,7 @@
     voting: false
     vars:
       coverage_artifact_name: "Coverage data (previous state)"
+    required-projects: *vexxhost-deps
 
 - job:
     name: coverage-diff
@@ -105,6 +115,7 @@
       previous_source_prefix: "{{ ansible_user_dir }}/previous-src"
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-linters-diff
@@ -116,6 +127,7 @@
       python_version: "3.8"
       tox_envlist: linters-diff
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-docs-el8
@@ -124,6 +136,7 @@
     vars:
       python_version: "3.6"
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: tox-docs-f32
@@ -132,6 +145,7 @@
     vars:
       python_version: "3.8"
       python_use_pyenv: false
+    required-projects: *vexxhost-deps
 
 - job:
     name: oopt-release-python
@@ -140,3 +154,4 @@
     pre-run: playbooks/release-python/pre.yaml
     run: playbooks/release-python/run.yaml
     post-run: playbooks/release-python/post.yaml
+    required-projects: *vexxhost-deps
