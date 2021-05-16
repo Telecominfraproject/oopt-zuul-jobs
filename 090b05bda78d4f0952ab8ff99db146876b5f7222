@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe5fc8b_8c21f580",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T21:52:40Z",
+      "side": 1,
+      "message": "OK, this is not the way to go:\n\n- If I do it this way, then the job will try to add comments for all the problems it found, including those files which are not present in the diff, which is visible as a warning in Gerrit\u0027s rendering of Zuul\u0027s output. That\u0027s not good.\n\n- Also, it (obviously) adds comments for unmodified chunks of modified files.\n\n- Finally, comments which are for actual modification are added twice if the issue was already there before the patch.\n\nIn short, nope, this is not good.",
+      "revId": "090b05bda78d4f0952ab8ff99db146876b5f7222",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
