@@ -130,6 +130,15 @@
     required-projects: *vexxhost-deps
 
 - job:
+    name: tox-linters-diff-n-report
+    parent: tox-linters-diff
+    description: |
+      Coding style linters over a diff introduced by a change and a summary report
+    post-run: playbooks/linters-html/post.yaml
+    vars:
+      tox_envlist: linters-diff-ci
+
+- job:
     name: tox-docs-el8
     parent: tox-docs
     nodeset: *el8
