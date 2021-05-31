@@ -24,31 +24,6 @@
     required-projects: *vexxhost-deps
 
 - job:
-    name: tox-py36-cover
-    parent: tox-cover
-    description: |
-      Run unit tests for a Python project under cPython version 3.6 with coverage tests.
-    nodeset: *el8
-    post-run: playbooks/coverage-diff/upload-one-report.yaml
-    provides: coverage-new
-    vars:
-      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
-      python_version: "3.6"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-- job:
-    name: tox-py36-cover-previous
-    parent: tox-py36-cover
-    nodeset: *el8
-    pre-run: playbooks/coverage-diff/checkout-previous.yaml
-    provides: coverage-old
-    voting: false
-    vars:
-      coverage_artifact_name: "Coverage data (previous state)"
-    required-projects: *vexxhost-deps
-
-- job:
     name: tox-py38-cover
     parent: tox-cover
     description: |
@@ -76,7 +51,7 @@
 - job:
     name: coverage-diff
     parent: base
-    nodeset: *el8
+    nodeset: *f32
     description: |
       Report how coverage changed compared to the previous state of the repo.
     pre-run: playbooks/coverage-diff/prepare.yaml
@@ -115,15 +90,6 @@
       tox_envlist: linters-diff-ci
 
 - job:
-    name: tox-docs-el8
-    parent: tox-docs
-    nodeset: *el8
-    vars:
-      python_version: "3.6"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-- job:
     name: tox-docs-f32
     parent: tox-docs
     nodeset: *f32
@@ -134,7 +100,7 @@
 
 - job:
     name: oopt-release-python
-    nodeset: *el8
+    nodeset: *f32
     description: Release python tarballs / wheels to pypi.
     pre-run: playbooks/release-python/pre.yaml
     run: playbooks/release-python/run.yaml
