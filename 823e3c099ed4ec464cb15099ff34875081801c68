@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d057538e_1838db0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-31T16:56:47Z",
+      "side": 1,
+      "message": "tested via https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/518086/2",
+      "revId": "823e3c099ed4ec464cb15099ff34875081801c68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
