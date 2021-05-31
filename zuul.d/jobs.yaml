@@ -49,30 +49,6 @@
     required-projects: *vexxhost-deps
 
 - job:
-    name: tox-py37-cover
-    parent: tox-cover
-    description: |
-      Run unit tests for a Python project under cPython version 3.7 with coverage tests.
-    post-run: playbooks/coverage-diff/upload-one-report.yaml
-    provides: coverage-new
-    vars:
-      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
-      python_version: "3.7"
-    required-projects: *vexxhost-deps
-
-- job:
-    name: tox-py37-cover-previous
-    parent: tox-py37-cover
-    description: |
-      Run unit tests for a previous version of a Python project under cPython version 3.7 with coverage tests.
-    pre-run: playbooks/coverage-diff/checkout-previous.yaml
-    provides: coverage-old
-    voting: false
-    vars:
-      coverage_artifact_name: "Coverage data (previous state)"
-    required-projects: *vexxhost-deps
-
-- job:
     name: tox-py38-cover
     parent: tox-cover
     description: |
