@@ -1,18 +1,4 @@
 ---
-# FIXME: remove this
-- job:
-    name: tox-py38-f32
-    parent: tox-py38
-    vars:
-      python_use_pyenv: false
-    nodeset: &f32
-      nodes:
-        - name: f32
-          label: fedora-32-2c-2g # needs more space in tmpfs
-    required-projects: &vexxhost-deps
-      - name: github.com/vexxhost/zuul-base-jobs
-        override-checkout: main
-
 - job:
     name: tox-py39-f34
     parent: tox-py39
@@ -22,7 +8,9 @@
       nodes:
         - name: f34
           label: fedora-34
-    required-projects: *vexxhost-deps
+    required-projects: &vexxhost-deps
+      - name: github.com/vexxhost/zuul-base-jobs
+        override-checkout: main
 
 - job:
     name: tox-py38-f34
@@ -31,33 +19,6 @@
       python_version: "3.8"
       python_use_pyenv: false
     nodeset: *f34
-    required-projects: *vexxhost-deps
-
-# FIXME: remove this
-- job:
-    name: tox-py38-cover
-    parent: tox-cover
-    description: |
-      Run unit tests for a Python project under cPython version 3.8 with coverage tests.
-    nodeset: *f32
-    post-run: playbooks/coverage-diff/upload-one-report.yaml
-    provides: coverage-new
-    vars:
-      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
-      python_version: "3.8"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-# FIXME: remove this
-- job:
-    name: tox-py38-cover-previous
-    parent: tox-py38-cover
-    nodeset: *f32
-    pre-run: playbooks/coverage-diff/checkout-previous.yaml
-    provides: coverage-old
-    voting: false
-    vars:
-      coverage_artifact_name: "Coverage data (previous state)"
     required-projects: *vexxhost-deps
 
 - job:
@@ -100,16 +61,6 @@
     post-run: playbooks/linters-html/post.yaml
     vars:
       tox_envlist: linters-diff-ci
-
-# FIXME: remove this
-- job:
-    name: tox-docs-f32
-    parent: tox-docs
-    nodeset: *f32
-    vars:
-      python_version: "3.8"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
 
 - job:
     name: tox-docs-f34
