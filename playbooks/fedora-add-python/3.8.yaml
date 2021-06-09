@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+    - name: Install Python
+      package:
+        name: python3.8
+        state: present
+      become: true
