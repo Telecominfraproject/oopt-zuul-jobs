@@ -15,27 +15,6 @@
         override-checkout: main
 
 - job:
-    name: tox-py39-f34
-    parent: tox-py39
-    vars:
-      python_use_pyenv: false
-    nodeset: &f34
-      nodes:
-        - name: f34
-          label: fedora-34
-    required-projects: *vexxhost-deps
-
-- job:
-    name: tox-py38-f34
-    parent: tox-py38
-    vars:
-      python_version: "3.8"
-      python_use_pyenv: false
-    nodeset: *f34
-    required-projects: *vexxhost-deps
-    pre-run: playbooks/fedora-add-python/3.8.yaml
-
-- job:
     name: coverage-diff
     parent: base
     nodeset: *f35
@@ -77,34 +56,11 @@
       tox_envlist: linters-diff-ci
 
 - job:
-    name: tox-docs-f34
-    parent: tox-docs
-    nodeset: *f34
-    vars:
-      python_version: "3.9"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-- job:
     name: tox-docs-f35
     parent: tox-docs
     nodeset: *f35
     vars:
       python_version: "3.10"
-      python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-- job:
-    name: tox-py39-cover
-    parent: tox-cover
-    description: |
-      Run unit tests for a Python project under cPython version 3.9 with coverage tests.
-    nodeset: *f34
-    post-run: playbooks/coverage-diff/upload-one-report.yaml
-    provides: coverage-new
-    vars:
-      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
-      python_version: "3.9"
       python_use_pyenv: false
     required-projects: *vexxhost-deps
 
@@ -120,17 +76,6 @@
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_version: "3.10"
       python_use_pyenv: false
-    required-projects: *vexxhost-deps
-
-- job:
-    name: tox-py39-cover-previous
-    parent: tox-py39-cover
-    nodeset: *f34
-    pre-run: playbooks/coverage-diff/checkout-previous.yaml
-    provides: coverage-old
-    voting: false
-    vars:
-      coverage_artifact_name: "Coverage data (previous state)"
     required-projects: *vexxhost-deps
 
 - job:
