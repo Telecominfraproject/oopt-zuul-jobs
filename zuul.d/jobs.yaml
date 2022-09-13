@@ -1,23 +1,11 @@
 ---
 - job:
-    name: tox-py310-f35
-    parent: tox # FIXME: https://review.opendev.org/c/zuul/zuul-jobs/+/821247
-    vars:
-      python_use_pyenv: false
-      tox_envlist: py310
-      python_version: "3.10"
+    name: coverage-diff
+    parent: base
     nodeset: &f35
       nodes:
         - name: f35
           label: fedora-35
-    required-projects: &vexxhost-deps
-      - name: github.com/vexxhost/zuul-base-jobs
-        override-checkout: main
-
-- job:
-    name: coverage-diff
-    parent: base
-    nodeset: *f35
     description: |
       Report how coverage changed compared to the previous state of the repo.
     pre-run: playbooks/coverage-diff/prepare.yaml
@@ -32,7 +20,9 @@
       previous_source_prefix: "{{ ansible_user_dir }}/previous-src"
       coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
       python_use_pyenv: false
-    required-projects: *vexxhost-deps
+    required-projects: &vexxhost-deps
+      - name: github.com/vexxhost/zuul-base-jobs
+        override-checkout: main
 
 - job:
     name: tox-linters-diff
