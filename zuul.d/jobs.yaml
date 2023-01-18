@@ -2,10 +2,10 @@
 - job:
     name: coverage-diff
     parent: base
-    nodeset: &f35
+    nodeset: &f36
       nodes:
-        - name: f35
-          label: fedora-35
+        - name: f36
+          label: fedora-36
     description: |
       Report how coverage changed compared to the previous state of the repo.
     pre-run: playbooks/coverage-diff/prepare.yaml
@@ -27,7 +27,7 @@
 - job:
     name: tox-linters-diff
     parent: tox-linters
-    nodeset: *f35
+    nodeset: *f36
     description: |
       Coding style linters over a diff introduced by a change
     vars:
@@ -46,9 +46,9 @@
       tox_envlist: linters-diff-ci
 
 - job:
-    name: tox-docs-f35
+    name: tox-docs-f36
     parent: tox-docs
-    nodeset: *f35
+    nodeset: *f36
     vars:
       python_version: "3.10"
       python_use_pyenv: false
@@ -59,7 +59,7 @@
     parent: tox-cover
     description: |
       Run unit tests for a Python project under cPython version 3.10 with coverage tests.
-    nodeset: *f35
+    nodeset: *f36
     post-run: playbooks/coverage-diff/upload-one-report.yaml
     provides: coverage-new
     vars:
@@ -71,7 +71,7 @@
 - job:
     name: tox-py310-cover-previous
     parent: tox-py310-cover
-    nodeset: *f35
+    nodeset: *f36
     pre-run: playbooks/coverage-diff/checkout-previous.yaml
     provides: coverage-old
     voting: false
@@ -81,7 +81,7 @@
 
 - job:
     name: oopt-release-python
-    nodeset: *f35
+    nodeset: *f36
     description: Release python tarballs / wheels to pypi.
     pre-run: playbooks/release-python/pre.yaml
     run: playbooks/release-python/run.yaml
